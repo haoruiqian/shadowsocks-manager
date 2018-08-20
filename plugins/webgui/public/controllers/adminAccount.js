@@ -400,8 +400,8 @@ app.controller('AdminAccountController', ['$scope', '$state', '$stateParams', '$
     };
   }
 ])
-.controller('AdminAddAccountController', ['$scope', '$state', '$stateParams', '$http', '$mdBottomSheet', 'alertDialog', '$filter',
-  ($scope, $state, $stateParams, $http, $mdBottomSheet, alertDialog, $filter) => {
+.controller('AdminAddAccountController', ['$scope', '$state', '$stateParams', '$http', '$mdBottomSheet', 'alertDialog', '$filter', 'adminApi',
+  ($scope, $state, $stateParams, $http, $mdBottomSheet, alertDialog, $filter, adminApi) => {
     $scope.setTitle('添加账号');
     $scope.setMenuButton('arrow_back', 'admin.account');
     $http.get('/api/admin/order').then(success => {
@@ -412,6 +412,17 @@ app.controller('AdminAccountController', ['$scope', '$state', '$stateParams', '$
       $scope.account.port = success.data.port;
       $scope.account.password = Math.random().toString().substr(2, 10);
     });
+    $scope.user = {
+      search: '',
+      searchChange: function(search) {
+      },
+      selectedItemChange: function(item) {
+        $scope.user.selectedItem = item;
+      },
+      querySearch: function(search) {
+        return adminApi.getUser({ search }).then(success => success.users);
+      }
+    };
     $scope.typeList = [
       {key: '不限量', value: 1},
       {key: '按周', value: 2},
@@ -492,6 +503,7 @@ app.controller('AdminAccountController', ['$scope', '$state', '$stateParams', '$
         autoRemoveDelay: $scope.account.autoRemoveDelay,
         multiServerFlow: $scope.account.multiServerFlow ? 1 : 0,
         server: $scope.account.accountServer ? server : null,
+        user: $scope.user.selectedItem ? +$scope.user.selectedItem.id : null,
       }).then(success => {
         alertDialog.show('添加账号成功', '确定');
         $state.go('admin.account');

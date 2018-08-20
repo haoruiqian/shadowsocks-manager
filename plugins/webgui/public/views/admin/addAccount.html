@@ -63,6 +63,25 @@
                     <label translate>自动删除延迟</label>
                     <input type="text" required name="autoRemoveDelay" ng-model="account.autoRemoveDelayStr" ng-disabled="!account.autoRemove">
                 </md-input-container>
+                <div class="md-block" layout="column" layout-align="center stretch" style="margin-bottom: 25px;">
+                    <md-autocomplete
+                        md-selected-item="user.selectedItem"
+                        md-search-text-change="user.searchChange(user.search)"
+                        md-search-text="user.search"
+                        md-selected-item-change="user.selectedItemChange(item)"
+                        md-items="item in user.querySearch(user.search)"
+                        md-item-text="item.username"
+                        md-delay="750"
+                        md-require-match="true"
+                        placeholder="请选择用户">
+                        <md-item-template>
+                            <span md-highlight-text="user.search" md-highlight-flags="^i">{{ item.username }}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            没有匹配的用户
+                        </md-not-found>
+                    </md-autocomplete>
+                </div>
             </form>
             <div ng-if="account.fromOrder === 1 || +account.type !== 1" style="width: 100%;" layout="row" layout-align="space-between center">
                 <div flex="75">到期自动删除</div>
