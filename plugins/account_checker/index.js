@@ -4,7 +4,7 @@ const knex = appRequire('init/knex').knex;
 const flow = appRequire('plugins/flowSaver/flow');
 const manager = appRequire('services/manager');
 const config = appRequire('services/config').all();
-const sleepTime = 100;
+const sleepTime = 1000 * 10;
 const accountFlow = appRequire('plugins/account/accountFlow');
 
 const sleep = time => {
